@@ -39,4 +39,4 @@ class DocumentListItem(BaseModel):
 
 class ShareResponse(BaseModel):
     share_url: str
-    expires_at: datetime
+    expires_at: Optional[datetime] = None
