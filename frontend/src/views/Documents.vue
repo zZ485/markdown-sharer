@@ -49,9 +49,17 @@ async function shareDoc(id) {
   }
 }
 
-function copyShareUrl() {
-  navigator.clipboard.writeText(shareUrl.value)
-  alert('链接已复制到剪贴板')
+async function copyShareUrl() {
+  try {
+    await navigator.clipboard.writeText(shareUrl.value)
+    alert('链接已复制到剪贴板')
+  } catch (e) {
+    // fallback: 使用传统复制方法
+    const input = document.querySelector('.share-url input')
+    input.select()
+    document.execCommand('copy')
+    alert('链接已复制到剪贴板')
+  }
 }
 
 function formatDate(date) {
@@ -93,7 +101,7 @@ function formatDate(date) {
     <div v-if="showShareModal" class="modal" @click.self="showShareModal = false">
       <div class="modal-content">
         <h2>分享链接</h2>
-        <p class="share-info">链接有效期 7 天</p>
+        <p class="share-info">链接永久有效</p>
         <div class="share-url">
           <input type="text" :value="shareUrl" readonly />
           <button @click="copyShareUrl" class="btn primary">复制</button>

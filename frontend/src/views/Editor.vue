@@ -21,7 +21,17 @@ onMounted(async () => {
   } else {
     title.value = '未命名文档'
   }
+
+  // 添加 Ctrl+S 快捷键
+  window.addEventListener('keydown', handleKeydown)
 })
+
+function handleKeydown(e) {
+  if ((e.ctrlKey || e.metaKey) && e.key === 's') {
+    e.preventDefault()
+    saveDocument()
+  }
+}
 
 function initVditor() {
   vditor = new Vditor('vditor', {

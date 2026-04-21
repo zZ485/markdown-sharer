@@ -42,15 +42,14 @@ def delete_document(db: Session, doc: Document):
 
 def create_share_token(db: Session, doc: Document):
     share_token = str(uuid.uuid4())
-    expires_at = datetime.utcnow() + timedelta(days=7)
     doc.share_token = share_token
-    doc.expires_at = expires_at
+    doc.expires_at = None  # 永久有效
     db.commit()
     db.refresh(doc)
-    return share_token, expires_at
+    return share_token, None
 
 
 def is_share_valid(doc: Document):
-    if not doc.share_token or not doc.expires_at:
+    if not doc.share_token:
         return False
-    return datetime.utcnow() < doc.expires_at
+    return True  # 永久有效
